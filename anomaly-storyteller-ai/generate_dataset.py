@@ -1,7 +1,13 @@
 import pandas as pd
 import random
 from datetime import datetime, timedelta
+import os
 
+# Ensure the data directory exists
+data_dir = "data"
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+    
 # Settings
 start_date = datetime(2024, 1, 1)
 days = 30

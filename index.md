@@ -11,10 +11,6 @@ I'm a data analyst with experience applying machine learning, cloud technologies
 
 ## 🔍 Featured Projects
 
-- [Barcode Pattern Recognition with Machine Learning](projects/barcode-ml)
-- [Anomaly Detection in ID Data Streams](projects/id-anomaly-detection)
-- [Dashboard for Real-Time ID Verification Insights](projects/id-dashboard)
-
 ---
 
 ## 🧰 Skills

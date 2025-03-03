@@ -45,21 +45,21 @@ def generate_invalid_id(state):
             id_number[7] = (id_number[7] + 2) % 10  # Force invalidity
     elif state == "IL":
         if (id_number[0] * id_number[3]) % 2 == 0:
-            id_number[3] = random.choice([1, 3, 5, 7, 9])  # Force invalidity
-
+            id_number[3] = random.choice([1, 3, 5, 7, 9])  # Force fourth digit to be odd
+            id_number[0] = random.choice([1, 3, 5, 7, 9])  # Also force first digit to be odd
     return "".join(map(str, id_number))
 
 # Generate dataset
 data = []
 for day in range(days):
-    for hour in range(9, 18):  # Business hours 9 AM to 5 PM
+    for hour in range(9, 17):  # Business hours 9 AM to 5 PM
         for loc in locations:
             city, state = loc["city"], loc["state"]
             store = random.choice(store_chains)
             device = random.choice(device_types)
 
             # Generate mostly valid IDs, with **only 2-5% invalid ones**
-            if random.random() < 0.03:  # Now ~3% invalid instead of 10-15%
+            if random.random() < 0.01:  # Now ~3% invalid instead of 10-15%
                 id_number = generate_invalid_id(state)
                 is_invalid = True
             else:
@@ -97,4 +97,5 @@ df = pd.DataFrame(data)
 df.to_csv(os.path.join(data_dir, "barcode_scans.csv"), index=False)
 
 print(f"✅ Dataset generated with {len(df)} rows and saved to data/barcode_scans.csv")
+print(df)
 

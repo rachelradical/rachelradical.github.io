@@ -51,6 +51,8 @@ def generate_invalid_id(state):
 
 # Generate dataset
 data = []
+invalid_count = 0  # Initialize the counter OUTSIDE the loop
+
 for day in range(days):
     for hour in range(9, 17):  # Business hours 9 AM to 5 PM
         for loc in locations:
@@ -58,10 +60,11 @@ for day in range(days):
             store = random.choice(store_chains)
             device = random.choice(device_types)
 
-            # Generate mostly valid IDs, with **only 2-5% invalid ones**
-            if random.random() < 0.01:  # Now ~3% invalid instead of 10-15%
+            # Generate mostly valid IDs, with ~3% invalid ones
+            if random.random() < 0.03:  # Corrected line: now ~3% invalid
                 id_number = generate_invalid_id(state)
                 is_invalid = True
+                invalid_count += 1  # Increment the counter
             else:
                 id_number = generate_id(state)
                 is_invalid = False
@@ -74,7 +77,7 @@ for day in range(days):
             elif store in ["FastScan"]:
                 scan_count *= random.uniform(0.7, 0.9)  # Slightly lower scan volume
 
-            # Inject **scan frequency anomalies** using Z-score logic
+            # Inject scan frequency anomalies using Z-score logic
             if random.random() < 0.02:  # 2% chance of a big spike
                 scan_count *= random.randint(3, 6)
             elif random.random() < 0.02:  # 2% chance of a dip
@@ -97,5 +100,5 @@ df = pd.DataFrame(data)
 df.to_csv(os.path.join(data_dir, "barcode_scans.csv"), index=False)
 
 print(f"✅ Dataset generated with {len(df)} rows and saved to data/barcode_scans.csv")
-print(df)
-
+print(f"Total Invalid IDs Generated: {invalid_count}")
+print(f"Percentage invalid: {(invalid_count / len(df)) * 100}%")

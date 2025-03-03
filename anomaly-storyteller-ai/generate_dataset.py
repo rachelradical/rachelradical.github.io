@@ -4,7 +4,7 @@ import random
 from datetime import datetime, timedelta
 
 # Ensure the data directory exists
-data_dir = "data"
+data_dir = "anomaly-storyteller-ai/data"
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 
@@ -19,86 +19,105 @@ locations = [
 device_types = ["Scanner A", "Scanner B", "Scanner C"]
 store_chains = ["MegaMart", "QuickStop", "IDMaxx", "FastScan", "RetailX"]
 
-# Function to generate a random 8-digit ID number
-def generate_id(state):
-    id_number = [random.randint(1, 9)]  # First digit should never be 0
-    id_number += [random.randint(0, 9) for _ in range(7)]  # Rest are random
+# Function to generate a valid PA ID
+def generate_pa_id(is_valid=True):
+    id_digits = [random.randint(2, 9)]  # First digit (2-9)
+    for _ in range(6):
+        id_digits.append(random.randint(0, 9))  # Digits 2-7 (0-9)
+    
+    if is_valid:
+        id_digits.append(11 - id_digits[0])  # Ensure checksum is valid
+    else:
+        id_digits.append((11 - id_digits[0] + random.randint(1,9) % 10)) # Force invalid checksum
 
-    # Apply checksum rules based on state
-    if state == "PA":  # Pittsburgh & Philadelphia
-        if (id_number[0] + id_number[7]) != 11:
-            id_number[7] = 11 - id_number[0]
-    elif state == "IL":  # Chicago
-        if (id_number[0] * id_number[3]) % 2 != 0:
-            id_number[3] = random.choice([0, 2, 4, 6, 8])
+    return "".join(map(str, id_digits))
 
-    return "".join(map(str, id_number))
+# Function to generate a valid IL ID
+def generate_il_id(is_valid=True):
+    id_digits = [random.randint(1, 9)]  # First digit (1-9)
+    for _ in range(2):
+        id_digits.append(random.randint(0, 9))  # Digits 2 and 3 (0-9)
 
-# Inject anomalies (Invalid IDs)
-def generate_invalid_id(state):
-    id_number = [random.randint(1, 9)]
-    id_number += [random.randint(0, 9) for _ in range(7)]
+    if is_valid:
+        if id_digits[0] % 2 == 1:  # If first digit is odd, fourth digit must be even
+            id_digits.append(random.choice([0, 2, 4, 6, 8]))
+        else:
+            id_digits.append(random.randint(0, 9))  # If first digit is even, fourth digit can be anything
+    else:
+        if id_digits[0] % 2 == 1:
+            id_digits.append(random.choice([1, 3, 5, 7, 9]))  # Force invalid checksum
+        else:
+            id_digits[0] += 1
+            id_digits.append(random.choice([1, 3, 5, 7, 9])) # force invalid by making both odd
 
-    # Ensure the ID **fails** the checksum for its state
+
+    for _ in range(4):
+        id_digits.append(random.randint(0, 9))  # Digits 5-8 (0-9)
+    return "".join(map(str, id_digits))
+
+# Function to generate an ID
+def generate_id(state, is_valid=True):
     if state == "PA":
-        if (id_number[0] + id_number[7]) == 11:
-            id_number[7] = (id_number[7] + 2) % 10  # Force invalidity
+        return generate_pa_id(is_valid)
     elif state == "IL":
-        if (id_number[0] * id_number[3]) % 2 == 0:
-            id_number[3] = random.choice([1, 3, 5, 7, 9])  # Force fourth digit to be odd
-            id_number[0] = random.choice([1, 3, 5, 7, 9])  # Also force first digit to be odd
-    return "".join(map(str, id_number))
+        return generate_il_id(is_valid)
+    else:
+        return "".join(map(str, [random.randint(0, 9) for _ in range(8)]))  # Other states
 
 # Generate dataset
 data = []
-invalid_count = 0  # Initialize the counter OUTSIDE the loop
-
 for day in range(days):
-    for hour in range(9, 17):  # Business hours 9 AM to 5 PM
+    for hour in range(9, 17):
         for loc in locations:
             city, state = loc["city"], loc["state"]
             store = random.choice(store_chains)
             device = random.choice(device_types)
 
-            # Generate mostly valid IDs, with ~3% invalid ones
-            if random.random() < 0.03:  # Corrected line: now ~3% invalid
-                id_number = generate_invalid_id(state)
-                is_invalid = True
-                invalid_count += 1  # Increment the counter
-            else:
-                id_number = generate_id(state)
-                is_invalid = False
+            # Determine the base number of unique IDs scanned that hour
+            base_unique_ids = random.randint(5, 15)
 
-            scan_count = random.randint(80, 200)  # Base scan count
+            # Inject anomalies: too many/few unique IDs scanned in one hour
+            if random.random() < 0.02:
+                base_unique_ids *= random.randint(20, 40)
+            elif random.random() > 0.98:
+                base_unique_ids = random.randint(0, 3)
 
-            # Introduce store-based variations
-            if store in ["MegaMart", "IDMaxx"]:
-                scan_count *= random.uniform(1.1, 1.3)  # Slightly higher scan volume stores
-            elif store in ["FastScan"]:
-                scan_count *= random.uniform(0.7, 0.9)  # Slightly lower scan volume
+            unique_ids = []
+            for _ in range(base_unique_ids):
+                is_valid = random.random() >= 0.02  # 2% chance of invalid ID
 
-            # Inject scan frequency anomalies using Z-score logic
-            if random.random() < 0.02:  # 2% chance of a big spike
-                scan_count *= random.randint(3, 6)
-            elif random.random() < 0.02:  # 2% chance of a dip
-                scan_count = random.randint(20, 50)
+                if is_valid:
+                    id_number = generate_id(state, True)
+                else:
+                    id_number = generate_id(state, False)  # Inject invalid checksum anomalies!
 
-            data.append({
-                "date": (start_date + timedelta(days=day)).date(),
-                "hour": hour,
-                "location": city,
-                "state": state,
-                "store_name": store,
-                "device_type": device,
-                "id_number": id_number,
-                "is_invalid_id": is_invalid,  # True/False flag
-                "scan_count": int(scan_count)  # Convert float to int
-            })
+                unique_ids.append((id_number, not is_valid))  # Store ID and validity
+
+            # Determine how often each ID is scanned
+            scan_events = []
+            for id_number, is_invalid in unique_ids:
+                scans = 1
+                if random.random() < 0.01:
+                    scans *= random.randint(4, 10)  # Anomaly: One ID scanned too many times
+
+                scan_events.append((id_number, scans, is_invalid))
+
+            # Save the data for each unique ID scanned
+            for id_number, scans, is_invalid in scan_events:
+                data.append({
+                    "date": (start_date + timedelta(days=day)).date(),
+                    "hour": hour,
+                    "location": city,
+                    "state": state,
+                    "store_name": store,
+                    "device_type": device,
+                    "id_number": id_number,
+                    "is_invalid_id": is_invalid,
+                    "scan_count": scans
+                })
 
 # Save to CSV
 df = pd.DataFrame(data)
 df.to_csv(os.path.join(data_dir, "barcode_scans.csv"), index=False)
 
-print(f"✅ Dataset generated with {len(df)} rows and saved to data/barcode_scans.csv")
-print(f"Total Invalid IDs Generated: {invalid_count}")
-print(f"Percentage invalid: {(invalid_count / len(df)) * 100}%")
+print(f"✅ Dataset generated with {len(df)} rows and saved to {os.path.join(data_dir, 'barcode_scans.csv')}")

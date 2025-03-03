@@ -1,71 +1,73 @@
 import os
+import json
 import pandas as pd
-import openai
+import google.generativeai as genai  # Gemini AI
 
-# 🔹 Ensure OpenAI API key is set (replace with your actual API key)
-openai.api_key = "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"
+# 🔹 Step 1: Load API Key
+genai.configure(api_key=os.getenv("AIzaSyAhWpMYn8HuzoNhD08NwYRoLI_NZBdUvDI"))
 
-# 🔹 Load the detected anomalies dataset
-anomaly_file = "data/detected_anomalies.csv"
+# Define data directory
+data_dir = "anomaly-storyteller-ai/data"
 
-if not os.path.exists(anomaly_file):
-    print("❌ No anomaly data found! Run anomaly detection first.")
-    exit()
+# 🔹 Step 2: Load Anomalies & Context Data
+storyteller_data_path = os.path.join(data_dir, "storyteller_data.json")
+context_data_path = os.path.join(data_dir, "context_data.csv")
 
-df = pd.read_csv(anomaly_file)
+# Load detected anomalies
+with open(storyteller_data_path, "r") as f:
+    anomalies = json.load(f)
 
-# 🔹 Analyze common trends in the anomalies
-anomaly_summary = df.groupby(["location", "device_type"]).agg({
-    "scan_count": ["mean", "max", "count"]
-}).reset_index()
+# Load contextual information
+context_df = pd.read_csv(context_data_path)
 
-# Rename columns for clarity
-anomaly_summary.columns = ["location", "device_type", "avg_scan_count", "max_scan_count", "anomaly_count"]
+# 🔹 Step 3: Match Anomalies to Context
+def find_context(row):
+    """Finds relevant context for an anomaly based on location, store, or date."""
+    match = context_df[
+        (context_df["location"] == row["location"])
+        & (context_df["store_name"] == row["store_name"])
+    ]
+    
+    if not match.empty:
+        return match.iloc[0].to_dict()  # Convert first match to a dictionary
+    return {}
 
-# Sort by most frequent anomalies
-anomaly_summary = anomaly_summary.sort_values(by="anomaly_count", ascending=False)
+for anomaly in anomalies:
+    anomaly["context"] = find_context(anomaly)
 
-# 🔹 Convert structured data into text format for AI
-summary_text = []
-for _, row in anomaly_summary.iterrows():
-    summary_text.append(
-        f"- {row['location']} (Device: {row['device_type']}) had {row['anomaly_count']} anomalies. "
-        f"Avg scans: {row['avg_scan_count']:.1f}, Max scans: {row['max_scan_count']}."
-    )
+# 🔹 Step 4: Generate AI Storytelling
+def generate_story(anomaly):
+    """Uses Gemini AI to generate a human-readable explanation for an anomaly."""
+    prompt = f"""
+    You are an AI assistant analyzing barcode scan anomalies.
+    Here is the detected anomaly:
+    
+    - Date: {anomaly['date']}
+    - Hour: {anomaly['hour']}
+    - Location: {anomaly['location']}
+    - Store: {anomaly['store_name']}
+    - Device: {anomaly['device_type']}
+    - ID Number: {anomaly['id_number']}
+    - Anomaly Type: {anomaly['anomaly_type']}
+    - Scan Count: {anomaly['scan_count']}
+    
+    Additional Context:
+    {anomaly['context']}
+    
+    Explain why this anomaly might be happening in simple terms.
+    """
+    
+    response = genai.GenerativeModel("gemini-pro").generate_content(prompt)
+    return response.text if response else "No explanation available."
 
-summary_text = "\n".join(summary_text)
+# 🔹 Step 5: Generate Explanations for Each Anomaly
+for anomaly in anomalies:
+    anomaly["explanation"] = generate_story(anomaly)
 
-# 🔹 Generate AI-driven report
-prompt = f"""
-You are an AI data analyst reviewing barcode scan anomaly data. Based on the structured summary below, 
-write a **concise, data-driven anomaly report**.
+# 🔹 Step 6: Save the Updated Anomalies with Explanations
+output_path = os.path.join(data_dir, "storyteller_output.json")
+with open(output_path, "w") as f:
+    json.dump(anomalies, f, indent=4)
 
-**Data Summary:**
-{summary_text}
-
-Your report should include:
-1️⃣ General trends in the anomalies.
-2️⃣ Top locations/devices with the most anomalies.
-3️⃣ Any time-based trends (e.g., spikes in afternoons, Mondays, etc.).
-4️⃣ A concise, factual conclusion.
-
-**DO NOT SPECULATE. Only use data from the summary.**
-"""
-
-response = openai.ChatCompletion.create(
-    model="gpt-4",
-    messages=[{"role": "user", "content": prompt}],
-    temperature=0.3
-)
-
-# 🔹 Save the AI-generated report
-story = response["choices"][0]["message"]["content"]
-
-report_path = "data/anomaly_report.txt"
-with open(report_path, "w") as f:
-    f.write(story)
-
-print("\n📊 **ANOMALY REPORT GENERATED!** 📊\n")
-print(story)
-print(f"\n✅ Report saved to {report_path}")
+print(f"✅ AI storyteller data saved with explanations to {output_path}.")
 

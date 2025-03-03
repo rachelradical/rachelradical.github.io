@@ -121,3 +121,60 @@ df = pd.DataFrame(data)
 df.to_csv(os.path.join(data_dir, "barcode_scans.csv"), index=False)
 
 print(f"✅ Dataset generated with {len(df)} rows and saved to {os.path.join(data_dir, 'barcode_scans.csv')}")
+
+#generate the context dataset for storyteller AI
+
+# Define the lists for known issues and policy changes
+known_issues = [
+    "Scanner lag reported", 
+    "No issues",
+    "Staff shortage", 
+    "No issues",
+    "Software update pending", 
+    "No issues",
+    "No issues"
+]
+
+policy_changes = [
+    "Updated ID policy", 
+    "None", 
+    "New scanner model installed", 
+    "None",
+    "Strict ID verification", 
+    "None",
+    "None"
+]
+
+# Create a date range for 30 days starting 2025-01-01
+dates = pd.date_range(start="2025-01-01", periods=30)
+
+# Build the context data
+data = []
+for date in dates:
+    for loc in locations:
+        city, state = loc["city"], loc["state"]
+        store = random.choice(store_chains)
+        device = random.choice(device_types)
+        data.append({
+            "date": date.strftime("%Y-%m-%d"),
+            "location": city,
+            "state": state,
+            "store_name": store,
+            "device_type": device,
+            "known_issues": pd.Series(known_issues).sample(1).iloc[0],
+            "policy_change": pd.Series(policy_changes).sample(1).iloc[0]
+        })
+
+# Create a DataFrame
+df_context = pd.DataFrame(data)
+
+# Define the data directory (adjust as needed)
+data_dir = "anomaly-storyteller-ai/data"
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+
+# Save to CSV
+context_data_path = os.path.join(data_dir, "context_data.csv")
+df_context.to_csv(context_data_path, index=False)
+
+print("✅ context_data.csv generated at:", context_data_path)

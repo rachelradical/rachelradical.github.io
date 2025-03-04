@@ -1,24 +1,25 @@
 import os
 import json
-import time 
+import time
 import pandas as pd
+import subprocess
+import sys
 
-# Try importing google-generativeai, install if missing
+# Auto-install OpenAI package if missing
 try:
-    import google.generativeai as genai
+    import openai
 except ModuleNotFoundError:
-    print("🔹 google-generativeai not found. Installing...")
-    os.system("pip install google-generativeai")
-    import google.generativeai as genai  # Try again after installation
+    print("🔹 OpenAI package not found. Installing...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "openai==0.28"])
+    import openai
 
-# 🔹 Step 1: Load API Key
-genai.configure(api_key="AIzaSyAhWpMYn8HuzoNhD08NwYRoLI_NZBdUvDI")
-
+# Configure OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY", "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")  # Replace with your API key if necessary
 
 # Define data directory
 data_dir = "anomaly-storyteller-ai/data"
 
-# 🔹 Step 2: Load Anomalies & Context Data
+# Define file paths for anomalies and context data
 storyteller_data_path = os.path.join(data_dir, "storyteller_data.json")
 context_data_path = os.path.join(data_dir, "context_data.csv")
 
@@ -28,39 +29,37 @@ try:
         anomalies = json.load(f)
 except FileNotFoundError:
     print(f"Error: {storyteller_data_path} not found.")
-    anomalies = [] # prevent errors later
-    exit() # exit because the main data is missing
+    anomalies = []
+    exit()
 
 # Load contextual information
 try:
     context_df = pd.read_csv(context_data_path)
 except FileNotFoundError:
     print(f"Error: {context_data_path} not found.")
-    context_df = pd.DataFrame() # prevent errors later
-    exit() # exit because the main data is missing
+    context_df = pd.DataFrame()
+    exit()
 
-# 🔹 Step 3: Match Anomalies to Context
+# Function to find context for an anomaly based on location, store, and date
 def find_context(row):
-    """Finds relevant context for an anomaly based on location, store, or date."""
-    if context_df.empty: #handle empty dataframes
+    if context_df.empty:
         return {}
-
     match = context_df[
-        (context_df["location"] == row["location"])
-        & (context_df["store_name"] == row["store_name"])
+        (context_df["location"] == row["location"]) &
+        (context_df["store_name"] == row["store_name"]) &
+        (context_df["date"] == row["date"])
     ]
-
     if not match.empty:
-        return match.iloc[0].to_dict()  # Convert first match to a dictionary
+        return match.iloc[0].to_dict()
     return {}
 
-if anomalies: # only run if there is data
-    for anomaly in anomalies:
-        anomaly["context"] = find_context(anomaly)
+# Attach context to each anomaly
+for anomaly in anomalies:
+    anomaly["context"] = find_context(anomaly)
 
-# 🔹 Step 4: Generate AI Storytelling
+# Function to generate a descriptive anomaly explanation using GPT-3.5 Turbo
 def generate_story(anomaly):
-    # Determine the anomaly description based on available fields:
+    # Build a description string based on available anomaly fields
     if anomaly.get("checksum_anomalies", False):
         anomaly_desc = "This is a checksum anomaly: the ID fails the expected checksum validation."
     elif anomaly.get("scan_count_anomaly"):
@@ -92,36 +91,39 @@ Provide a concise, data-driven explanation of what might be causing this anomaly
     """
 
     retry_count = 3
-    delay = 2  # Initial delay in seconds
-
+    delay = 2  # seconds
     while retry_count > 0:
         try:
-            response = genai.GenerativeModel("models/gemini-1.5-pro").generate_content(prompt)
-            return response.text if response else "No explanation available."
-        except Exception as e: #to handle quota limit
+            # New interface: include a system message for context
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.3
+            )
+            return response["choices"][0]["message"]["content"]
+        except Exception as e:
             if "429" in str(e):
                 print(f"Rate limit exceeded. Retrying in {delay} seconds...")
                 time.sleep(delay)
-                delay *= 2  # Exponential backoff
+                delay *= 2  # exponential backoff
                 retry_count -= 1
             else:
                 print(f"Error generating story: {e}")
                 return "Error generating explanation."
-
     print("Max retries exceeded. Unable to generate explanation.")
     return "Error generating explanation."
 
-# 🔹 Step 5: Generate Explanations for Each Anomaly
-if anomalies: #only run if there is data
-    for anomaly in anomalies:
-        anomaly["explanation"] = generate_story(anomaly)
-
-# 🔹 Step 6: Save the Updated Anomalies with Explanations
+# Generate explanations for each anomaly
 if anomalies:
     for anomaly in anomalies:
         anomaly["explanation"] = generate_story(anomaly)
-        time.sleep(1) #add a small delay between each call.
 
-    print(f"✅ AI storyteller data saved with explanations to {output_path}.")
-else:
-    print("No anomaly data to process.")
+# Save the updated anomalies with explanations to a JSON file
+output_path = os.path.join(data_dir, "storyteller_output.json")
+with open(output_path, "w") as f:
+    json.dump(anomalies, f, indent=4)
+
+print(f"✅ AI storyteller data saved with explanations to {output_path}.")

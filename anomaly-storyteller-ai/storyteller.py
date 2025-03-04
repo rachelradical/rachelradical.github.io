@@ -10,11 +10,12 @@ try:
     import openai
 except ModuleNotFoundError:
     print("🔹 OpenAI package not found. Installing...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "openai==0.28"])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "openai"])
     import openai
 
+from openai import OpenAI
 # Set API key from environment variable or hardcoded (replace with your key)
-api_key = os.getenv("OPENAI_API_KEY", "secrets.OPENAI_API_KEY")
+api_key = os.getenv
 client = openai.OpenAI(api_key=api_key)
 
 # Define data directory

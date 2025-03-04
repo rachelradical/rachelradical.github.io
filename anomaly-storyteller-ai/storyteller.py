@@ -90,6 +90,7 @@ Detected Anomalies:
 {chr(10).join(anomaly_summaries)}
 
 Provide a **single**, concise explanation of potential causes for these anomalies. 
+If an anomaly corresponds with a potential cause from the context provided, it is likely not fraudulent.
 If there are checksum anomalies or repeated scans of unique IDs, and the context data provides no reasonable explanation, the anomaly should be highlighted as needing to be investigated for potential fraud.
 """
 

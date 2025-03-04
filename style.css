@@ -10,7 +10,7 @@ body {
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #8a6856, #92524f);
+    background-color: #854442
     padding: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }

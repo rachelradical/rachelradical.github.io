@@ -13,11 +13,13 @@ except ModuleNotFoundError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "openai==0.28"])
     import openai
 
-# Configure OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY", "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")  # Replace with your API key if necessary
+# Set API key from environment variable or hardcoded (replace with your key)
+api_key = os.getenv("OPENAI_API_KEY", "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")
+if api_key.startswith("sk-"):
+    client = openai.OpenAI(api_key=api_key)
 
 # Define data directory
-data_dir = "anomaly-storyteller-ai/data"
+data_dir = "/workspaces/rachelradical.github.io/anomaly-storyteller-ai/data"
 
 # Define file paths for anomalies and context data
 storyteller_data_path = os.path.join(data_dir, "storyteller_data.json")
@@ -57,45 +59,45 @@ def find_context(row):
 for anomaly in anomalies:
     anomaly["context"] = find_context(anomaly)
 
-# Function to generate a descriptive anomaly explanation using GPT-3.5 Turbo
-def generate_story(anomaly):
-    # Build a description string based on available anomaly fields
-    if anomaly.get("checksum_anomalies", False):
-        anomaly_desc = "This is a checksum anomaly: the ID fails the expected checksum validation."
-    elif anomaly.get("scan_count_anomaly"):
-        anomaly_desc = "This is a scan count anomaly: the ID was scanned an abnormal number of times."
-    else:
-        anomaly_desc = "No specific anomaly type is indicated based on the available data."
+# Group anomalies by date & location to reduce API calls
+grouped_anomalies = {}
+for anomaly in anomalies:
+    key = (anomaly["date"], anomaly["location"])
+    if key not in grouped_anomalies:
+        grouped_anomalies[key] = []
+    grouped_anomalies[key].append(anomaly)
 
+# Function to generate **one** explanation per date/location batch
+def generate_story(date, location, anomalies_list):
+    anomaly_summaries = []
+    for anomaly in anomalies_list:
+        if anomaly.get("checksum_anomalies", False):
+            anomaly_type = "Checksum Anomaly (Invalid ID format)"
+        elif anomaly.get("scan_count_anomaly", False):
+            anomaly_type = "Scan Count Anomaly (Too many/few scans)"
+        else:
+            anomaly_type = "Unknown Anomaly"
+
+        summary = f"- Store: {anomaly.get('store_name', 'N/A')}, Device: {anomaly.get('device_type', 'N/A')}, ID: {anomaly.get('id_number', 'N/A')}, Type: {anomaly_type}"
+        anomaly_summaries.append(summary)
+
+    # Generate a **single** API request per batch of anomalies
     prompt = f"""
 You are an AI assistant analyzing barcode scan anomalies.
-Here is the detected anomaly:
+A batch of anomalies was detected on {date} in {location}.
 
-- Date: {anomaly.get('date', 'N/A')}
-- Hour: {anomaly.get('hour', 'N/A')}
-- Location: {anomaly.get('location', 'N/A')}
-- Store: {anomaly.get('store_name', 'N/A')}
-- Device: {anomaly.get('device_type', 'N/A')}
-- ID Number: {anomaly.get('id_number', 'N/A')}
-- Scan Count: {anomaly.get('scan_count', 'N/A')}
+Detected Anomalies:
+{chr(10).join(anomaly_summaries)}
 
-Additional Details:
-- Calculated Valid ID: {anomaly.get('calculated_valid_id', 'N/A')}
-- Checksum Anomalies: {anomaly.get('checksum_anomalies', 'N/A')}
-- Scan Count Z-Score: {anomaly.get('scan_count_z_score', 'N/A')}
-- Scan Count Anomaly: {anomaly.get('scan_count_anomaly', 'N/A')}
-
-Explanation: {anomaly_desc}
-
-Provide a concise, data-driven explanation of what might be causing this anomaly, using only the information above.
-    """
+Provide a **single**, concise explanation of potential causes for these anomalies. 
+"""
 
     retry_count = 3
     delay = 2  # seconds
     while retry_count > 0:
         try:
-            # New interface: include a system message for context
-            response = openai.ChatCompletion.create(
+            # Use the new OpenAI API syntax
+            response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
@@ -103,23 +105,29 @@ Provide a concise, data-driven explanation of what might be causing this anomaly
                 ],
                 temperature=0.3
             )
-            return response["choices"][0]["message"]["content"]
+            return response.choices[0].message.content
         except Exception as e:
             if "429" in str(e):
                 print(f"Rate limit exceeded. Retrying in {delay} seconds...")
                 time.sleep(delay)
-                delay *= 2  # exponential backoff
+                delay *= 2
                 retry_count -= 1
             else:
                 print(f"Error generating story: {e}")
                 return "Error generating explanation."
+
     print("Max retries exceeded. Unable to generate explanation.")
     return "Error generating explanation."
 
-# Generate explanations for each anomaly
-if anomalies:
-    for anomaly in anomalies:
-        anomaly["explanation"] = generate_story(anomaly)
+# Generate explanations for each grouped batch instead of individual anomalies
+batch_explanations = {}
+for (date, location), anomalies_list in grouped_anomalies.items():
+    print(f"Processing anomalies for {date} in {location}...")
+    batch_explanations[(date, location)] = generate_story(date, location, anomalies_list)
+
+# Attach batch explanations back to each anomaly
+for anomaly in anomalies:
+    anomaly["explanation"] = batch_explanations.get((anomaly["date"], anomaly["location"]), "No explanation available.")
 
 # Save the updated anomalies with explanations to a JSON file
 output_path = os.path.join(data_dir, "storyteller_output.json")

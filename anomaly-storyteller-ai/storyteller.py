@@ -14,9 +14,8 @@ except ModuleNotFoundError:
     import openai
 
 # Set API key from environment variable or hardcoded (replace with your key)
-api_key = os.getenv("OPENAI_API_KEY", "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")
-if api_key.startswith("sk-"):
-    client = openai.OpenAI(api_key=api_key)
+api_key = os.getenv("OPENAI_API_KEY", "secrets.OPENAI_API_KEY")
+client = openai.OpenAI(api_key=api_key)
 
 # Define data directory
 data_dir = "/workspaces/rachelradical.github.io/anomaly-storyteller-ai/data"

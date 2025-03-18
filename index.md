@@ -11,8 +11,9 @@
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="mathsolver.html">Math Solver</a></li>
+                <li><a href="vaers-covid19-analysis">Analysis of VAERS Covid-19 Data</a></li>
                 <li><a href="anomaly-ai.html">Anomaly Storyteller AI</a></li>
+                <li><a href="mathsolver.html">Math Solver</a></li>
             </ul>
         </nav>
     </header>

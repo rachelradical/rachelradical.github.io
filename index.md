@@ -36,6 +36,7 @@
             <div class="project">
                 <h3>Analysis of VAERS Covid 19 Vaccine Data</h3>
                 <p>This notebook contains an exploratory analysis of the massive Vaccine Adverse Event dataset from the US Department of Health and Human Services. Analysis uncovered several intriguing patterns that have not been previously reported on. Results have been shared with researchers for further investigation, and the project is ongoing.</p>
+                <a href="vaers-covid19-analysis.html" class="button">Learn More</a>
                 <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/vaers-covid19-analysis.html" target="_blank" class="button">View Summary</a>
             </div>
 

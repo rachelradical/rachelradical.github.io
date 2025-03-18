@@ -30,7 +30,7 @@
                 <h3>Anomaly Storyteller AI</h3>
                 <p>The Anomaly Storyteller AI is a project that generates sample barcode scan data, analyzes it for anomalies, and then uses OpenAI's API to explain the anomalies by cross-referencing it with contextual data.</p>
                 <a href="anomaly-ai.html" class="button">Learn More</a>
-                <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/anomaly-storyteller-ai" target="_blank" class="button">View Summary</a>
+                <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/anomaly-storyteller-ai" target="_blank" class="button">View Code</a>
             </div>
 
             <div class="project">
@@ -43,7 +43,7 @@
                 <h3>Math Solver</h3>
                 <p>A Python-based solver that can compute derivatives, integrals, and optimize functions using gradient descent.</p>
                 <a href="mathsolver.html" class="button">Learn More</a>
-                <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/math-solver" target="_blank" class="button">View Summary</a>
+                <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/math-solver" target="_blank" class="button">View Code</a>
             </div>
             
         </section>

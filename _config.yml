@@ -1,33 +1,34 @@
-# site settings
-title: Forty
-subtitle: by HTML5 UP
-email: youremailaddress@gmail.com
+title: "Rachel Radke's Portfolio"
+subtitle: "Data Analyst | Software Engineer | Machine Learning Engineer | rachelcradke@gmail.com"
+remote-theme: forty
+
+email: rachelcradke@gmail.com
 description: A responsive site template designed by HTML5 Up<br /> and released under the Creative Commons.
-baseurl: "/forty-jekyll-theme" # the subpath of your site, e.g. /blog
-url: # the base hostname & protocol for your site
-author:
-street_address: 1234 Somewhere Road
-city: Nashville
-state: TN
-zip_code: 55555
+baseurl: "/"
+url: https://rachelradical.github.io/
+author: Rachel Radke
+
+city: Pittsburgh
+state: PA
+zip_code: 15224
 country: United States of America
-phone: (716) 555-5555
+phone: (412) 463-4093
 
 # homepage tiles
 tiles-source: pages # accepts "posts" or "pages"
-tiles-count: 6
+tiles-count: 3
 
 # social settings (key must match name of font awesome icon)
 # see https://fontawesome.com/icons?d=gallery&p=2&s=brands
 # Icons are not shown if value is empty
 # You need to restart jekyll for changes to have an effect
 socials:
-  GitHub: https://github.com/andrewbanchich
+  GitHub: https://github.com/rachelradical
   GitLab:
-  Google-Plus: https://plus.google.com/u/0/+AndrewBanchich
+  Google-Plus: 
   Instagram:
-  LinkedIn: https://www.linkedin.com/in/andrew-banchich-a4ba1195
-  Twitter: https://twitter.com/andrewbanchich
+  LinkedIn: https://www.linkedin.com/in/rachel-c-radke
+  Twitter:
   Facebook:
   Slack:
 

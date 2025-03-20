@@ -7,7 +7,7 @@ image: null
 author: null
 show_tile: false
 ---
-<body>
+<html><body>
   
                 <li><a href="index.html">Home</a></li>
                 <li><a href="vaers-covid19-analysis.html">Analysis of VAERS Covid-19 Data</a></li>
@@ -39,13 +39,5 @@ show_tile: false
                 <p>A Python-based solver that can compute derivatives, integrals, and optimize functions using gradient descent.</p>
                 <a href="mathsolver.html" class="button">Learn More</a>
                 <a href="https://github.com/rachelradical/rachelradical.github.io/tree/main/math-solver" target="_blank" class="button">View Code</a>
-            </div>
-            
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Rachel Radke. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+  
+</body></html>

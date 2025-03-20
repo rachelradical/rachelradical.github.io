@@ -1,3 +1,45 @@
 title: "Rachel Radke's Portfolio"
-description: "Data Analyst | Software Engineer | Machine Learning Engineer | rachelcradke@gmail.com"
+subtitle: "Data Analyst | Software Engineer | Machine Learning Engineer | rachelcradke@gmail.com"
 theme: minima
+
+email: rachelcradke@gmail.com
+description: A responsive site template designed by HTML5 Up<br /> and released under the Creative Commons.
+baseurl: "/"
+url: https://rachelradical.github.io/
+author: Rachel Radke
+
+city: Pittsburgh
+state: PA
+zip_code: 15224
+country: United States of America
+phone: (412) 463-4093
+
+# homepage tiles
+tiles-source: pages # accepts "posts" or "pages"
+tiles-count: 3
+
+# social settings (key must match name of font awesome icon)
+# see https://fontawesome.com/icons?d=gallery&p=2&s=brands
+# Icons are not shown if value is empty
+# You need to restart jekyll for changes to have an effect
+socials:
+  GitHub: https://github.com/rachelradical
+  GitLab:
+  Google-Plus: 
+  Instagram:
+  LinkedIn: https://www.linkedin.com/in/rachel-c-radke
+  Twitter:
+  Facebook:
+  Slack:
+
+# build settings
+markdown: kramdown
+
+sass:
+  style: compressed
+
+exclude:
+- "*.gemspec"
+- LICENSE.md
+- CONTRIBUTING.md
+- README.md 

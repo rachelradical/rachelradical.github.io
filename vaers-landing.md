@@ -8,9 +8,6 @@ nav-menu: true
 
 ## Analysis of VAERS Covid 19 Vaccine Data
 
-[Learn More](/vaers-covid19-analysis.html)
-[View Summary](https://github.com/rachelradical/rachelradical.github.io/tree/main/vaers-covid19-analysis.html){:target="_blank"}
-
 This exploratory data analysis project delves into COVID-19 vaccine adverse events reported to the Vaccine Adverse Event Reporting System (VAERS) from 2021-2024. Leveraging data analytics techniques in Python, the analysis uncovered key insights, including geographic disparities in reporting, significant variations by vaccine lot, temporal patterns of adverse events, and notable gender-based differences in symptom frequency and severity. The project incorporates diverse visualizations such as heat maps, symptom co-occurrence analysis, demographic breakdowns, and natural language processing of patient-reported narratives to provide nuanced insights into vaccine safety monitoring.
 
 ### Features:

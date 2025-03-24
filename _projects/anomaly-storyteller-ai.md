@@ -2,7 +2,7 @@
 layout: post
 title: Anomaly Storyteller AI
 description: Generates sample barcode scan data, analyzes anomalies, and explains them using OpenAI's API.
-image: /assets/images/AI-barcode.png
+image: /assets/AI-barcode.png
 nav-menu: true
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: Analysis of VAERS Covid 19 Vaccine Data
 description: Exploratory analysis of the Vaccine Adverse Event dataset from the US Department of Health and Human Services.
-image: /assets/images/covidvax.jpg
+image: /assets/covidvax.jpg
 nav-menu: true
 ---
 

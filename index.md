@@ -4,7 +4,7 @@ title: Home
 landing-title: "Rachel Radke's Portfolio"
 description: Data science, mathematical modeling, and AI development projects.
 image: /assets/images/home-banner.jpg # Replace with your image path
-show_tile: false # Set to true to use tiles
+show_tile: true
 ---
 
 <main>

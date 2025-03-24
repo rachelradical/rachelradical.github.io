@@ -11,23 +11,23 @@ Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer
 
 ## 🚀 Featured Projects
 
-### [📐 Math Solver AI](./math-solver-landing)
+### [📐 Math Solver AI](.math-solver-landing)
 
 An interactive suite of Python scripts featuring automatic solutions for calculus problems, including derivatives, integrals, and visualization of mathematical functions using gradient descent and symbolic mathematics.
 
-[Explore Math Solver →](./_projects/math-solver)
+[Explore Math Solver →](._projects/math-solver)
 
-### [📖 Anomaly Storyteller AI](./anomaly-ai)
+### [📖 Anomaly Storyteller AI](.anomaly-ai)
 
 A creative storytelling tool powered by AI, detecting data anomalies and generating narrative explanations to make data insights understandable and engaging.
 
-[Explore Anomaly Storyteller →](./_projects/anomaly-storyteller-ai)
+[Explore Anomaly Storyteller →](._projects/anomaly-storyteller-ai)
 
-### [💉 VAERS Data Analysis](./vaers-landing)
+### [💉 VAERS Data Analysis](.vaers-landing)
 
 An exploratory data analysis project utilizing Python to analyze and visualize vaccine adverse event reporting system (VAERS) data, highlighting important trends and patterns.
 
-[Explore VAERS Data Analysis →](./_projects/VAERS-covid-data)
+[Explore VAERS Data Analysis →](._projects/VAERS-covid-data)
 
 ## 🌟 Current Initiatives
 

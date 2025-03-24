@@ -4,7 +4,7 @@ title: Home
 landing-title: "Rachel Radke's Portfolio"
 description: Data Science | Software & AI Engineering 
 image: /assets/images/home-banner.jpg # Replace with your image path
-show_tile: true
+show_tile: false
 ---
 
 Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
@@ -15,7 +15,7 @@ Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer
 
 An interactive suite of Python scripts featuring automatic solutions for calculus problems, including derivatives, integrals, and visualization of mathematical functions using gradient descent and symbolic mathematics.
 
-[Explore Math Solver →](._projects/math-solver)
+
 
 ### [📖 Anomaly Storyteller AI](.anomaly-ai)
 

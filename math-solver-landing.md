@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: Math Solver
 description: A Python-based solver for derivatives, integrals, and function optimization.
 image: /assets/math.jpg

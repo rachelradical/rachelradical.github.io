@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Anomaly Storyteller AI Details
 ---
 

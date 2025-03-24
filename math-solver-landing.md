@@ -1,13 +1,14 @@
 ---
-layout: page
-title: Math Solver Details
+layout: post
+title: Math Solver
+description: A Python-based solver for derivatives, integrals, and function optimization.
+image: /assets/math.jpg
+nav-menu: true
 ---
 
-# Math Solver
+## Math Solver
 
-## About the Math Solver
-
-The Math Solver is a Python-based tool that helps analyze mathematical functions through symbolic computation and visualization.
+A Python-based solver that can compute derivatives, integrals, and optimize functions using gradient descent.
 
 ### Features:
 

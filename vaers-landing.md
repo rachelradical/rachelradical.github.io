@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: VAERS Covid-19 Data Analysis Details
 ---
 

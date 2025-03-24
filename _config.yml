@@ -6,6 +6,9 @@ description: Examples of my technical projects
 baseurl: "" # leave empty
 url: "https://rachelradical.github.io"
 
+tiles-source: pages # accepts "posts" or "pages"
+tiles-count: 3
+
 # Social settings
 github_url: https://github.com/rachelradical
 

@@ -1,0 +1,9 @@
+main:
+  - title: "Home"
+    url: "/"
+  - title: "Anomaly Storyteller AI"
+    url: "/anomaly-ai.md" # Or the correct path to your project page
+  - title: "VAERS Covid-19 Data Analysis"
+    url: "/vaers-landing.md"
+  - title: "Math Solver"
+    url: "/math-solver-landing.md"

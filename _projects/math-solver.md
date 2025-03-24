@@ -2,7 +2,7 @@
 layout: post
 title: Math Solver
 description: A Python-based solver for derivatives, integrals, and function optimization.
-image: /assets/images/math-solver.jpg # Replace with your image path
+image: /assets/math.jpg
 nav-menu: true
 ---
 

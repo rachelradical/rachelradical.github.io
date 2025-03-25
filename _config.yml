@@ -5,6 +5,10 @@ email: rachelcradke@gmail.com
 description: Examples of my technical projects
 baseurl: "" # leave empty
 url: "https://rachelradical.github.io"
+city: Pittsburgh
+state: PA
+zip_code: 15224
+phone: (412) 463-4093
 
 tiles-source: pages # accepts "posts" or "pages"
 tiles-count: 3

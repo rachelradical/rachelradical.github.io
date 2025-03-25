@@ -11,8 +11,11 @@ show_tile: false
                 <header class="major">
                     <h2>About me</h2>
                 </header>
+               </div>
+   </section>
 
-<p>Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
+
+Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
 
 ## 🚀 Featured Projects
 
@@ -40,8 +43,4 @@ I'm currently launching **[Incline AI](https://inclineai.tech)**, a consultancy 
 
 - **Email:** [rachelcradke@gmail.com](mailto:rachelcradke@gmail.com)
 - **LinkedIn:** [Connect with me on LinkedIn](https://linkedin.com/in/rachel-c-radke)
-- **GitHub:** [github.com/rachelradical](https://github.com/rachelradical)</p>
-
-        
-   </div>
-   </section>
+- **GitHub:** [github.com/rachelradical](https://github.com/rachelradical)

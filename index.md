@@ -6,6 +6,7 @@ description: Data Science | Software & AI Engineering
 image: /assets/images/home-banner.jpg # Replace with your image path
 show_tile: false
 ---
+<h2>About Me</h2>
 
 Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
 

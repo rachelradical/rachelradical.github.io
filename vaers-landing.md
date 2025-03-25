@@ -17,5 +17,5 @@ This exploratory data analysis project delves into COVID-19 vaccine adverse even
 * **Text Mining and NLP:** NLTK, WordCloud, Text Preprocessing and Tokenization
 
 
-[View Notebook](https://rachelradical.github.io/blob/17157a2ca39677d837c742b8a87aa84445f8be2a/VAERS-Covid19-Analysis/VAERS_Covid_Data.ipynb){:target="_blank"}
+[View Notebook](https://rachelradical.github.io/blob/17157a2ca39677d837c742b8a87aa84445f8be2a/VAERS-Covid19-Analysis/VAERS_Covid_Data.ipynb){:target="_blank"}</br>
 [View on Google Colab](https://colab.research.google.com/drive/1M7g1qVAHilMeqo3WdN2dKihFlY6olsi9?usp=sharing){:target="_blank"}

@@ -6,28 +6,29 @@ description: Data Science | Software & AI Engineering
 image: /assets/images/home-banner.jpg # Replace with your image path
 show_tile: false
 ---
+<section id="two">
+            <div class="inner">
+                <header class="major">
+                    <h2>About me</h2>
+                </header>
 
-Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
+<p>Welcome! I'm **Rachel Radke**, a Pittsburgh-based data scientist and AI engineer passionate about making AI understandable, impactful, and accessible. With a background in mathematics, education, data analytics, and entrepreneurship, my work bridges advanced technology and practical human needs.
 
 ## 🚀 Featured Projects
 
-### [📐 Math Solver AI](.math-solver-landing)
-
+### 📐 Math Solver
 An interactive suite of Python scripts featuring automatic solutions for calculus problems, including derivatives, integrals, and visualization of mathematical functions using gradient descent and symbolic mathematics.
+<a href="math-solver-landing">Learn More</a>
 
-
-
-### [📖 Anomaly Storyteller AI](.anomaly-ai)
-
+### 📖 Anomaly Storyteller AI
 A creative storytelling tool powered by AI, detecting data anomalies and generating narrative explanations to make data insights understandable and engaging.
+<a href="anomaly-ai">Learn More</a>
 
-[Explore Anomaly Storyteller →](._projects/anomaly-storyteller-ai)
-
-### [💉 VAERS Data Analysis](.vaers-landing)
+### 💉 VAERS Data Analysis
 
 An exploratory data analysis project utilizing Python to analyze and visualize vaccine adverse event reporting system (VAERS) data, highlighting important trends and patterns.
+<a href="vaers-landing">Learn More</a>
 
-[Explore VAERS Data Analysis →](._projects/VAERS-covid-data)
 
 ## 🌟 Current Initiatives
 
@@ -39,4 +40,8 @@ I'm currently launching **[Incline AI](https://inclineai.tech)**, a consultancy 
 
 - **Email:** [rachelcradke@gmail.com](mailto:rachelcradke@gmail.com)
 - **LinkedIn:** [Connect with me on LinkedIn](https://linkedin.com/in/rachel-c-radke)
-- **GitHub:** [github.com/rachelradical](https://github.com/rachelradical)
+- **GitHub:** [github.com/rachelradical](https://github.com/rachelradical)</p>
+
+        
+   </div>
+   </section>

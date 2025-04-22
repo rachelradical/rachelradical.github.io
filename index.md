@@ -2,7 +2,7 @@
 layout: home
 title: Home
 landing-title: "Rachel Radke's Portfolio"
-description: Data Science | Software & AI Engineering 
+description: Data Science | Software & Machine Learning Engineering 
 image: /assets/images/home-banner.jpg # Replace with your image path
 show_tile: false
 ---

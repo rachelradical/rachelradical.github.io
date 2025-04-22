@@ -28,7 +28,7 @@ An exploratory data analysis project utilizing Python to analyze and visualize v
 
 ## 🌟 Current Initiatives
 
-I'm currently launching **[Incline AI](https://inclineai.tech)**, a consultancy empowering Pittsburgh-area businesses, nonprofits, and educators to integrate AI technology practically and confidently.
+I recently launched **[Incline AI](https://inclineai.tech)**, a consultancy empowering Pittsburgh-area businesses, nonprofits, and educators to integrate AI technology practically and confidently. Additionally, I am wrapping up production on Blabbr, an AI-powered mobile app designed specifically for users with ADHD. Learn more at **[Blabbr](https://blabbrapp.com)**, and be sure to sign up for updates!
 
 ---
 
